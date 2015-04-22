@@ -13,10 +13,10 @@ class ApplicationController < ActionController::Base
 
   def user?
     unless current_user
-      redirect_to :signin_users
+      redirect_to signin_users_path
     end
     unless current_user.password_changed
-      redirect_to :edit_users
+      redirect_to edit_users_path
     end
   end
 end
