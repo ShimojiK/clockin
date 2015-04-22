@@ -1,0 +1,13 @@
+p
+  | signin
+
+= form_tag :users, method: :post do
+  div
+    = label_tag :account, "アカウント名"
+    = text_field_tag :account, params[:account]
+  div
+    = label_tag :password, "パスワード"
+    = password_field_tag :password, params[:password]
+
+  = submit_tag "ログイン"
+

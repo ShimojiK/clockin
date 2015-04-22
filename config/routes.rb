@@ -4,4 +4,9 @@ Rails.application.routes.draw do
   resources :time_logs, only: [:index, :new, :create, :update] do
     resources :comments, only: [:index]
   end
+
+  resource :users, only: [:create] do
+    get "signin" => "users#signin"
+    delete "signout" => "users#signout"
+  end
 end
