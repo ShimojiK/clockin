@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150422103211) do
+ActiveRecord::Schema.define(version: 20150422103340) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "account"
@@ -19,6 +19,22 @@ ActiveRecord::Schema.define(version: 20150422103211) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
+
+  create_table "comments", force: :cascade do |t|
+    t.integer  "time_log_id"
+    t.text     "body"
+    t.integer  "ack_admin_id"
+    t.integer  "status"
+    t.integer  "admin_id"
+    t.string   "type"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+  end
+
+  add_index "comments", ["ack_admin_id"], name: "index_comments_on_ack_admin_id"
+  add_index "comments", ["admin_id"], name: "index_comments_on_admin_id"
+  add_index "comments", ["time_log_id"], name: "index_comments_on_time_log_id"
+  add_index "comments", ["type"], name: "index_comments_on_type"
 
   create_table "hourly_wages", force: :cascade do |t|
     t.integer  "user_id"
