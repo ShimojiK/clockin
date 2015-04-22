@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     resources :comments, only: [:index]
   end
 
-  resource :users, only: [:create] do
+  resource :users, only: [:create, :edit, :update] do
     get "signin" => "users#signin"
     delete "signout" => "users#signout"
   end

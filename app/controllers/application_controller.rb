@@ -15,5 +15,8 @@ class ApplicationController < ActionController::Base
     unless current_user
       redirect_to :signin_users
     end
+    unless current_user.password_changed
+      redirect_to :edit_users
+    end
   end
 end

@@ -17,6 +17,18 @@ class UsersController < ApplicationController
     end
   end
 
+  def edit
+    @user = current_user
+  end
+
+  def update
+    if current_user.update(password_params.merge(password_changed: true))
+      redirect_to root_path, notice: "パスワードを更新しました"
+    else
+      redirect_to :back
+    end
+  end
+
   def signout
     reset_session
     redirect_to signin_users_path, notice: "ログアウトしました"
@@ -25,5 +37,9 @@ class UsersController < ApplicationController
   private
   def signin_params
     params.permit(:account, :password)
+  end
+
+  def password_params
+    params.permit(:password)
   end
 end

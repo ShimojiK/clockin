@@ -4,5 +4,6 @@ FactoryGirl.define do
     desc "description"
     sequence(:account) {|n| "user#{n}" }
     password "password"
+    password_changed false
   end
 end

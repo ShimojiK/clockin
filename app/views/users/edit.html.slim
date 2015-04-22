@@ -1,0 +1,10 @@
+p
+  | edit
+
+/ :todo form_forに変更
+= form_tag :users, method: :put do
+  div
+    = label_tag :password, "新しいパスワード"
+    = password_field_tag :password, params[:password]
+
+  = submit_tag "更新"
