@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150422103044) do
+ActiveRecord::Schema.define(version: 20150422103211) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "account"
@@ -19,6 +19,17 @@ ActiveRecord::Schema.define(version: 20150422103044) do
     t.datetime "created_at",      null: false
     t.datetime "updated_at",      null: false
   end
+
+  create_table "hourly_wages", force: :cascade do |t|
+    t.integer  "user_id"
+    t.datetime "start_at"
+    t.datetime "end_at"
+    t.integer  "wage"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "hourly_wages", ["user_id"], name: "index_hourly_wages_on_user_id"
 
   create_table "time_logs", force: :cascade do |t|
     t.integer  "user_id"
