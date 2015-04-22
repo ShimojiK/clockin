@@ -13,7 +13,7 @@ class UsersController < ApplicationController
       session[:user_id] = user.id
       redirect_to root_path
     else
-      redirect_to user_signin_path, alert: "アカウント名またはパスワードが間違っています"
+      redirect_to signin_users_path, alert: "アカウント名またはパスワードが間違っています"
     end
   end
 
