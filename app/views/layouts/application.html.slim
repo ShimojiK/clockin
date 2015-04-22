@@ -7,5 +7,10 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   body
-    = link_to "ログアウト", signout_users_path, method: :delete
+    div.header-menu
+      = link_to "打刻", root_path
+      |  
+      = link_to "打刻一覧と修正", new_time_log_path
+      |  
+      = link_to "ログアウト", signout_users_path, method: :delete
     = yield
