@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   skip_before_action :user?, only: [:signin, :create]
+  skip_before_action :password_changed?, only: [:signin, :create, :edit, :update]
 
   def signin
     if current_user
