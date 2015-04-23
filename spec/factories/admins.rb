@@ -1,7 +1,6 @@
 FactoryGirl.define do
   factory :admin do
-    account "MyString"
-password_digest "MyString"
+    sequence(:account) {|n| "admin#{n}" }
+    password "password"
   end
-
 end

@@ -1,0 +1,11 @@
+p
+  | admin signin
+
+= form_for @admin, url: admins_path do |f|
+  div
+    = f.label :account, "アカウント"
+    = f.text_field :account
+  div
+    = f.label :password, "パスワード"
+    = f.password_field :password
+  = f.submit "ログイン"

@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+    title
+      | Clockin for Admin
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = csrf_meta_tags
+  body
+    div.header-menu
+      = link_to "ユーザ一覧", "#"
+      |  
+      = link_to "ログアウト", signout_admins_path, method: :delete
+    = yield
