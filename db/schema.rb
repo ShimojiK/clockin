@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150422103340) do
+ActiveRecord::Schema.define(version: 20150423112619) do
 
   create_table "admins", force: :cascade do |t|
     t.string   "account"
@@ -65,9 +65,9 @@ ActiveRecord::Schema.define(version: 20150422103340) do
     t.text     "desc"
     t.string   "account"
     t.string   "password_digest"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-    t.boolean  "password_changed"
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.boolean  "password_changed", default: false
   end
 
 end
