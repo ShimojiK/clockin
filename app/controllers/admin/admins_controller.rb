@@ -13,7 +13,7 @@ class Admin::AdminsController < Admin::Base
     admin = Admin.find_by(account: signin_params[:account])
     if admin && admin.authenticate(signin_params[:password])
       session[:admin_id] = admin.id
-      redirect_to admin_root_path
+      redirect_to admin_users_path
     else
       redirect_to signin_admins_path, alert: "アカウント名またはパスワードが間違っています"
     end
