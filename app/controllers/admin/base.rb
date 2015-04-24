@@ -1,5 +1,4 @@
 class Admin::Base < ApplicationController
-  skip_before_action :user?, :password_changed?
   before_action :admin?
   helper_method :current_admin
   layout 'layouts/application_admin'

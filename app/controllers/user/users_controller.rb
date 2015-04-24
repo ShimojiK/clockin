@@ -1,4 +1,4 @@
-class UsersController < ApplicationController
+class User::UsersController < User::Base
   skip_before_action :user?, only: [:signin, :create]
   skip_before_action :password_changed?, only: [:signin, :create, :edit, :update]
 

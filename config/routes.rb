@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root "time_logs#new"
+  root "user/time_logs#new"
 
   resource :admins, only: [:create], controller: "admin/admins" do
     get "signin" => "admin/admins#signin"
@@ -12,13 +12,13 @@ Rails.application.routes.draw do
     end
   end
 
-  resource :users, only: [:create, :edit, :update] do
+  resource :users, only: [:create, :edit, :update], module: :user do
     get "signin" => "users#signin"
     delete "signout" => "users#signout"
   end
 
   # for logined user
-  resources :time_logs, only: [:index, :new, :create, :update] do
+  resources :time_logs, only: [:index, :new, :create, :update], module: :user do
     resources :comments, only: [:index]
   end
 
