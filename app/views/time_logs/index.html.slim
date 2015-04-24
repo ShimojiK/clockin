@@ -1,7 +1,11 @@
 p
   | index
 
-- @time_logs.each do |time_log|
-  div
-    = time_log.start_at
-    = time_log.end_at
+table
+  tr
+    th start
+    th end
+  - @time_logs.each do |time_log|
+    tr
+      td= time_log.start_at
+      td= link_to time_log.end_at, time_log_comments_path(time_log)

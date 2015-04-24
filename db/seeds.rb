@@ -5,4 +5,7 @@ Rake::Task["db:migrate:reset"].invoke
 FactoryGirl.create(:admin)
 
 user = FactoryGirl.create(:user)
-FactoryGirl.create_list(:time_log, 10, user: user)
+10.times do |i|
+  time_log = FactoryGirl.create(:time_log, user: user)
+  FactoryGirl.create_list(:user_comment, 5, time_log: time_log)
+end
