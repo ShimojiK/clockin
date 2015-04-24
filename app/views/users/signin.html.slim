@@ -1,8 +1,7 @@
 p
   | signin
 
-/ :todo form_forに変更
-= form_tag :users, method: :post do
+= form_for @user, url: users_path do
   div
     = label_tag :account, "アカウント名"
     = text_field_tag :account, params[:account]
