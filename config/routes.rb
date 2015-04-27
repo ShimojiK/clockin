@@ -19,7 +19,7 @@ Rails.application.routes.draw do
 
   # for logined user
   resources :time_logs, only: [:index, :new, :create, :update], module: :user do
-    resources :comments, only: [:index]
+    resources :comments, only: [:index, :create]
   end
 
 end

@@ -2,3 +2,10 @@ p comments
 
 - @comments.each do |comment|
   div= comment.body
+
+= @new_comment.inspect
+= form_for @new_comment, url: { controller: "user/comments", action: :create } do |f|
+  div
+    = f.label :body, "コメント"
+    = f.text_field :body, autocomplete: :off
+  = f.submit "送信"
