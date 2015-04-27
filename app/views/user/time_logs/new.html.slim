@@ -1,2 +1,8 @@
-h1
+p
   | /time_logs/new
+
+= form_tag time_logs_path, method: :post do
+  - if @time_log.start_at
+    = submit_tag "Stop", data: { disable_with: "送信中" }
+  - else
+    = submit_tag "Start", data: { disable_with: "送信中" }
