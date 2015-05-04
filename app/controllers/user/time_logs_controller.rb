@@ -22,14 +22,18 @@ class User::TimeLogsController < User::Base
     time_log = current_user.time_logs.find(params[:id])
     old_end = time_log.end_at
     if time_log.user_updatable?
-      if time_log.update(time_log_param)
-        if time_log.create_update_comment(old_end)
-          redirect_to :back
+      if time_log.shorten?(params[:time_log])
+        if time_log.update(time_log_param)
+          if time_log.create_update_comment(old_end)
+            redirect_to :back
+          else
+            redirect_to :back, notice: "コメントの投稿に失敗しました(時刻の変更には問題ありません)"
+          end
         else
-          redirect_to :back, notice: "コメントの投稿に失敗しました(時刻の変更には問題ありません)"
+          redirect_to :back, alret: "更新に失敗しました"
         end
       else
-          redirect_to :back, alret: "更新に失敗しました"
+        redirect_to :back, alert: "延長はできません"
       end
     else
       redirect_to :back, alert: "変更ができるのは打刻後60分以内です"
