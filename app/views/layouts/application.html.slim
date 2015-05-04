@@ -8,9 +8,7 @@ html
     = csrf_meta_tags
   body
     .header-menu
-      = link_to "打刻", root_path
-      |  
-      = link_to "打刻一覧と修正", time_logs_path
+      = link_to "トップ", time_logs_path
       |  
       = link_to "ログアウト", signout_users_path, method: :delete
     .notice

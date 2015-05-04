@@ -1,11 +1,7 @@
 class User::TimeLogsController < User::Base
   def index
+    @condition = current_user.time_logs.exists?(end_at: nil)
     @time_logs = current_user.time_logs
-  end
-
-  # todo newはindex内に統合
-  def new
-    @time_log = current_user.time_logs.find_or_initialize_by(end_at: nil)
   end
 
   def create
@@ -36,7 +32,7 @@ class User::TimeLogsController < User::Base
           redirect_to :back, alret: "更新に失敗しました"
       end
     else
-      redirect_to :back, alert: "変更ができるのは打刻60分以内です"
+      redirect_to :back, alert: "変更ができるのは打刻後60分以内です"
     end
   end
 

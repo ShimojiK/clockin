@@ -6,7 +6,7 @@ class TimeLog < ActiveRecord::Base
   validate :not_inversion
 
   def not_inversion
-    errors.add(:base, "Must not inversion time") if start_at >= end_at
+    errors.add(:base, "Must not inversion time") if end_at && start_at >= end_at
   end
 
   def create_update_comment(old_end)
