@@ -8,9 +8,9 @@ class Admin::UsersController < Admin::Base
   end
 
   def create
-    user = User.create(user_params)
+    user = User.create(new_user_params)
     if user
-      redirect_to admin_users_path
+      redirect_to admin_users_path, notice: "ユーザを作成しました"
     end
   end
 
@@ -19,14 +19,18 @@ class Admin::UsersController < Admin::Base
   end
 
   def update
-    user = User.find(params[:id]).update(user_params)
-    if user
-      redirect_to admin_users_path
+    user = User.find(params[:id])
+    if user.update(edit_user_params)
+      redirect_to admin_user_time_logs_path(user), notice: "ユーザを更新しました"
     end
   end
 
   private
-  def user_params
-    params.require(:user).permit(:name, :desc, :account, :password)
+  def new_user_params
+    edit_user_params.merge(params.require(:user).permit(:password))
+  end
+
+  def edit_user_params
+    params.require(:user).permit(:name, :desc, :account)
   end
 end

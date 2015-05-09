@@ -1,6 +1,8 @@
 p index
-= link_to "新しいユーザ", new_admin_user_path
 
-- @users.each do |user|
-  div
-    = user.account
+input.small-center(type="button" onclick="location.href='#{new_admin_user_path}'" value="new user")
+
+table
+  - @users.each do |user|
+    tr
+      td= link_to user.account, admin_user_time_logs_path(user)
