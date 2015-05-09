@@ -1,4 +1,11 @@
 p admin comments index
 
+= form_for [:admin, @time_log] do |f|
+  - year = Time.now.year
+  = f.datetime_select :start_at, use_month_numbers: true, start_year: year.pred, end_year: year
+  | ~ 
+  = f.datetime_select :end_at, use_month_numbers: true, start_year: year.pred, end_year: year
+  = f.submit "変更"
+
 - @comments.reverse_each do |comment|
   div= comment.body
