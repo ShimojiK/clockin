@@ -2,3 +2,31 @@
 @import "base/grid-settings";
 @import "neat";
 @import "base/base";
+
+body {
+  font-family: $helvetica;
+}
+
+.wrapper {
+  @include outer-container(1024px);
+}
+
+.user-form {
+  @include span-columns(4);
+  @include shift(4);
+}
+
+.comment-form {
+  @include outer-container;
+  .body {
+    @include span-columns(10);
+  }
+  .send {
+    @include span-columns(2);
+  }
+}
+
+.incise {
+  @include span-columns(2);
+  @include shift(5);
+}

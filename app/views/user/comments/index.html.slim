@@ -8,10 +8,11 @@
   div 打刻後60分が経過しているため打刻の変更はできません
 
 = form_for @new_comment, url: { controller: "user/comments", action: :create } do |f|
-  = f.label :body, "コメント"
-  = f.text_field :body, autocomplete: :off
-  = f.submit "送信"
+  .comment-form
+    = f.label :body, "コメント"
+    = f.text_field :body, autocomplete: :off, class: "body"
+    = f.submit "送信", class: "send"
 
-- @comments.each do |comment|
+- @comments.reverse_each do |comment|
   / todo instance_of?で色分け
   div= comment.body
