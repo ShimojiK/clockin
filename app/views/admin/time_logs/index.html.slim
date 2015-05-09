@@ -1,0 +1,13 @@
+p admin time_log index
+
+div= @user.account
+input.small-center(type="button" onclick="location.href='#{edit_admin_user_path(@user)}'" value="Edit")
+
+table
+  tr
+    th start
+    th end
+  - @time_logs.each do |time_log|
+    tr
+      td= time_log.start_at
+      td= link_to time_log.end_at, admin_time_log_comments_path(time_log)

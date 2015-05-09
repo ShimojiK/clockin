@@ -9,6 +9,9 @@ Rails.application.routes.draw do
   # for admin
   namespace :admin do
     resources :users, only: [:index, :new, :create, :edit, :update] do
+      resources :time_logs, only: [:index, :update], shallow: true do
+        resources :comments, only: [:index, :create]
+      end
     end
   end
 
