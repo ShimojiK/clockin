@@ -11,8 +11,9 @@ html
       = link_to "トップ", time_logs_path
       |  
       = link_to "ログアウト", signout_users_path, method: :delete
-    .notice
-      = notice
-    .alert
-      = alert
-    = yield
+    .wrapper
+      .notice
+        = notice
+      .alert
+        = alert
+      = yield
