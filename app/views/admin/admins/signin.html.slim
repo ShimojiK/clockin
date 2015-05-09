@@ -1,7 +1,6 @@
-p
-  | admin signin
+p admin signin
 
-= form_for @admin, url: admins_path do |f|
+.user-form= form_for @admin, url: admins_path do |f|
   div
     = f.label :account, "アカウント"
     = f.text_field :account

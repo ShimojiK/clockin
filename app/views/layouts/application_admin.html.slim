@@ -7,8 +7,13 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   body
-    div.header-menu
+    .header-menu
       = link_to "ユーザ一覧", admin_users_path
       |  
       = link_to "ログアウト", signout_admins_path, method: :delete
-    = yield
+    .wrapper
+      .notice
+        = notice
+      .alert
+        = alert
+      = yield
