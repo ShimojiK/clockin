@@ -17,21 +17,12 @@ class User::TimeLogsController < User::Base
     redirect_to :back
   end
 
-  # todo
   def update
     time_log = current_user.time_logs.find(params[:id])
     old_end = time_log.end_at
     if time_log.user_updatable?
       if time_log.shorten?(params[:time_log])
-        if time_log.update(time_log_param)
-          if time_log.create_update_comment(old_end)
-            redirect_to :back
-          else
-            redirect_to :back, notice: "コメントの投稿に失敗しました(時刻の変更には問題ありません)"
-          end
-        else
-          redirect_to :back, alret: "更新に失敗しました"
-        end
+        redirect_to :back, time_log.update_with_create_user_comment(time_log_params, old_end)
       else
         redirect_to :back, alert: "延長はできません"
       end
@@ -41,7 +32,7 @@ class User::TimeLogsController < User::Base
   end
 
   private
-  def time_log_param
+  def time_log_params
     params.require(:time_log).permit(:end_at)
   end
 end
