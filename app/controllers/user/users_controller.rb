@@ -3,9 +3,7 @@ class User::UsersController < User::Base
   skip_before_action :password_changed?, only: [:signin, :create, :edit, :update]
 
   def signin
-    if current_user
-      redirect_to root_path
-    end
+    redirect_to root_path if current_user
     @user = User.new
   end
 

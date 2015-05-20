@@ -10,6 +10,7 @@ class TimeLog < ActiveRecord::Base
     errors.add(:base, "Must not inversion time") if end_at && start_at >= end_at
   end
 
+  # fixme まだ終了打刻されていないとエラーになる
   def user_updatable?
     Time.now < original_end_at + 1.hour
   end

@@ -8,9 +8,9 @@ html
     = csrf_meta_tags
   body
     .header-menu
-      = link_to "ユーザ一覧", admin_users_path
+      = link_to "user list", admin_users_path
       |  
-      = link_to "ログアウト", signout_admins_path, method: :delete
+      = link_to "signout", signout_admins_path, method: :delete
     .wrapper
       .notice
         = notice
