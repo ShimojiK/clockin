@@ -13,15 +13,15 @@ RSpec.describe TimeLog, type: :model do
     it { is_expected.not_to be_valid }
   end
 
-  describe "#user_updatable?" do
+  describe "#user_updatable_status" do
     it "is true" do
       time_log = FactoryGirl.build :time_log
-      expect(time_log).to be_user_updatable
+      expect(time_log.user_updatable_status).to eq 0
     end
 
     it "is false on passing 1 hour and over" do
       time_log = FactoryGirl.build :time_log, original_end_at: Time.now - 2.hour
-      expect(time_log).not_to be_user_updatable
+      expect(time_log.user_updatable_status).to eq 1
     end
   end
 
