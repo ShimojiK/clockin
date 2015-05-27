@@ -14,4 +14,8 @@ p admin comments index
     = f.submit "送信", class: "send"
 
 - @comments.reverse_each do |comment|
-  div= comment.body
+  div
+    = comment.body
+    - if comment.instance_of? UserComment
+      = form_tag admin_comment_path(comment.id), method: :patch, remote: true
+        = select_tag "admin_comment[status]", options_for_select({"未承認" => 0, "承認" => 1}, selected: comment.status), onchange: '$(this.form).submit();'

@@ -6,7 +6,6 @@ FactoryGirl.define do
 
     factory :user_comment, parent: :comment, class: :user_comment do
       ack_admin nil
-      status 1
       type "UserComment"
     end
 

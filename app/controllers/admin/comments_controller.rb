@@ -10,8 +10,17 @@ class Admin::CommentsController < Admin::Base
     redirect_to :back, alert: (comment.save ? nil : "コメントの投稿に失敗しました")
   end
 
+  def update
+    UserComment.find(params[:id]).update(status_params.merge(ack_admin_id: current_admin.id))
+    render nothing: true
+  end
+
   private
   def comment_params
     params.require(:admin_comment).permit(:body)
+  end
+
+  def status_params
+    params.require(:admin_comment).permit(:status)
   end
 end

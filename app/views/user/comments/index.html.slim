@@ -19,4 +19,6 @@
 
 - @comments.reverse_each do |comment|
   / todo instance_of?で色分け
-  div= comment.body
+  div
+    = comment.body
+    = comment.state unless comment.status.zero?
