@@ -27,12 +27,12 @@ RSpec.describe TimeLog, type: :model do
 
   describe "#shorten?" do
     let(:param) do
-      time = Time.now
+      time = Time.now - 9.hour - 10.minute # set locale and shorten
       { "end_at(1i)" => time.year,
         "end_at(2i)" => time.month,
         "end_at(3i)" => time.day,
-        "end_at(4i)" => time.hour - 9, #fixme time locale
-        "end_at(5i)" => time.min - 10 }
+        "end_at(4i)" => time.hour,
+        "end_at(5i)" => time.min }
     end
     it "is true " do
       time_log = FactoryGirl.build :time_log
