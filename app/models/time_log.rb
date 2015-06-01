@@ -10,21 +10,36 @@ class TimeLog < ActiveRecord::Base
     errors.add(:base, "Must not inversion time") if end_at && start_at >= end_at
   end
 
-  #fixme uncool
+  def shorten?(param)
+    end_at > Time.zone.local(*param.values)
+  end
+
   def user_updatable_status
     if original_end_at
-      if Time.now < original_end_at + 1.hour
-        0
+      if self == self.user.time_logs.last
+        if Time.now < original_end_at + 1.hour
+          :ok
+        else
+          :time_over
+        end
       else
-        1
+        :non_target
       end
     else
-      2
+      :uncomplete
     end
   end
 
-  def shorten?(param)
-    end_at > Time.zone.local(*param.values)
+  def user_updatable?
+    user_updatable_status == :ok
+  end
+
+  def unupdatable_message
+    case user_updatable_status
+    when :time_over then "変更ができるのは打刻後60分以内です"
+    when :non_target then "変更できるのは最新の打刻だけです"
+    when :uncomplete then "まだ終了していません"
+    end
   end
 
   #fixme uncool
