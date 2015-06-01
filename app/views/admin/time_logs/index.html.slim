@@ -8,4 +8,7 @@ table
   - @time_logs.each do |time_log|
     tr
       td= time_log.start_at
-      td= link_to time_log.end_at, admin_time_log_comments_path(time_log)
+      - if time_log.end_at
+        td= link_to time_log.end_at, admin_time_log_comments_path(time_log)
+      - else
+        td= link_to "未終了", admin_time_log_comments_path(time_log)

@@ -1,9 +1,12 @@
-= form_for [:admin, @time_log] do |f|
-  - year = Time.now.year
-  = f.datetime_select :start_at, use_month_numbers: true, start_year: year.pred, end_year: year
-  | ~ 
-  = f.datetime_select :end_at, use_month_numbers: true, start_year: year.pred, end_year: year
-  = f.submit "変更"
+- if @time_log.user_updatable_status != :uncomplete
+  div= form_for [:admin, @time_log] do |f|
+    - year = Time.now.year
+    = f.datetime_select :start_at, use_month_numbers: true, start_year: year.pred, end_year: year
+    | ~ 
+    = f.datetime_select :end_at, use_month_numbers: true, start_year: year.pred, end_year: year
+    = f.submit "変更"
+- else
+  div= @time_log.unupdatable_message
 
 = form_for @new_comment, url: { controller: "admin/comments", action: :create } do |f|
   .comment-form
