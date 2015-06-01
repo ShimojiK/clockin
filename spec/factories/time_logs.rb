@@ -6,5 +6,9 @@ FactoryGirl.define do
     original_start_at    Time.now - 1.hour
     original_end_at      Time.now
     modified_by_admin_id nil
+
+    factory :time_log_with_user do
+      user
+    end
   end
 end
