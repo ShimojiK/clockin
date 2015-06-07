@@ -8,7 +8,7 @@ RSpec.describe User::UsersController, type: :controller do
       session[:user_id] = user.id
     end
 
-    describe "#signin" do
+    describe "GET signin" do
       it "redirect to root_path" do
         get :signin
         expect(response).to redirect_to root_path
@@ -17,7 +17,7 @@ RSpec.describe User::UsersController, type: :controller do
   end
 
   context "user not signined" do
-    describe "#signin" do
+    describe "GET signin" do
       before do
         get :signin
       end
