@@ -11,7 +11,7 @@ class TimeLog < ActiveRecord::Base
   end
 
   def shorten?(param)
-    end_at > Time.zone.local(*param.values)
+    end_at > Time.zone.local(param["end_at(1i)"], param["end_at(2i)"], param["end_at(3i)"], param["end_at(4i)"], param["end_at(5i)"])
   end
 
   def user_updatable_status
