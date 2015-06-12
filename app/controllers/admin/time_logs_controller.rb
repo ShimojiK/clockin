@@ -7,7 +7,7 @@ class Admin::TimeLogsController < Admin::Base
   def update
     time_log = TimeLog.find(params[:id])
     old_end = time_log.end_at
-    redirect_to :back, time_log.update_with_create_admin_comment(time_log_params, old_end, current_admin)
+    redirect_to admin_time_log_comments_path(time_log), time_log.update_with_create_admin_comment(time_log_params, old_end, current_admin)
   end
 
   private

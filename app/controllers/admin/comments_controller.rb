@@ -7,7 +7,7 @@ class Admin::CommentsController < Admin::Base
 
   def create
     comment = TimeLog.find(params[:time_log_id]).admin_comments.new(comment_params.merge(admin_id: current_admin.id))
-    redirect_to :back, alert: (comment.save ? nil : "コメントの投稿に失敗しました")
+    redirect_to admin_time_log_comments_path(comment.time_log), alert: (comment.save ? nil : "コメントの投稿に失敗しました")
   end
 
   def update

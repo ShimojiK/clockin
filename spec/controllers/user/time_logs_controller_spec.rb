@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe User::TimeLogsController, type: :controller do
-  let(:user) { FactoryGirl.create(:user) }
+  let(:user) { FactoryGirl.create :user }
   before do
     session[:user_id] = user.id
   end
