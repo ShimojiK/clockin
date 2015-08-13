@@ -11,7 +11,7 @@ class User::UsersController < User::Base
     user = User.find_by(account: signin_params[:account])
     if user && user.authenticate(signin_params[:password])
       session[:user_id] = user.id
-      redirect_to root_path
+      redirect_to root_path, notice: "ログインしました"
     else
       redirect_to signin_users_path, alert: "アカウント名またはパスワードが間違っています"
     end
