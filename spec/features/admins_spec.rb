@@ -1,0 +1,32 @@
+require 'rails_helper'
+
+feature 'Admin management' do
+  let(:admin) { FactoryGirl.create :admin }
+
+  background do
+    visit signin_admins_path
+    fill_in 'アカウント', with: admin.account
+    fill_in 'パスワード', with: "password"
+    click_button 'ログイン'
+  end
+
+  scenario "log in" do
+    expect(page).to have_content 'ログインしました'
+  end
+
+  scenario "log out" do
+    visit admin_users_path
+    click_link 'signout'
+    expect(page).to have_content 'ログアウトしました'
+  end
+
+  scenario "create user" do
+    visit new_admin_user_path
+    fill_in '名前', with: "test-user"
+    fill_in '説明', with: "test-description"
+    fill_in 'アカウント名', with: "test-account"
+    fill_in 'パスワード', with: "test-password"
+    click_button '保存'
+    expect(page).to have_content 'ユーザを作成しました'
+  end
+end
