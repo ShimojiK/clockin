@@ -4,10 +4,7 @@ feature 'Admin management' do
   let(:admin) { FactoryGirl.create :admin }
 
   background do
-    visit signin_admins_path
-    fill_in 'アカウント', with: admin.account
-    fill_in 'パスワード', with: "password"
-    click_button 'ログイン'
+    admin_login
   end
 
   scenario "log in" do

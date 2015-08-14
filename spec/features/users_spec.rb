@@ -4,13 +4,10 @@ feature 'User management' do
   let(:user) { FactoryGirl.create :user }
 
   background do
-    visit root_path
-    fill_in 'アカウント名', with: user.account
-    fill_in 'パスワード', with: "password"
-    click_button 'ログイン'
+    user_login
   end
 
-  scenario 'user log in' do
+  scenario "user log in" do
     expect(page).to have_content 'ログインしました'
   end
 
@@ -22,10 +19,7 @@ feature "New user management" do
 
   scenario "required to change password" do
     # login admin
-    visit signin_admins_path
-    fill_in 'アカウント', with: admin.account
-    fill_in 'パスワード', with: "password"
-    click_button 'ログイン'
+    admin_login
 
     # create user
     visit new_admin_user_path
@@ -40,10 +34,7 @@ feature "New user management" do
     click_link 'signout'
 
     # login user
-    visit root_path
-    fill_in 'アカウント名', with: user.account
-    fill_in 'パスワード', with: "password"
-    click_button 'ログイン'
+    user_login
 
     # change password
     fill_in '新しいパスワード', with: "new-password"
