@@ -6,7 +6,7 @@
     = f.datetime_select :end_at, use_month_numbers: true, start_year: year.pred, end_year: year
     = f.submit "変更"
 - else
-  div= @time_log.unupdatable_message
+  div 未完了です
 
 = form_for @new_comment, url: { controller: "admin/comments", action: :create } do |f|
   .comment-form

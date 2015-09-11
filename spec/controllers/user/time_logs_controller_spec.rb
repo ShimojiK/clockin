@@ -6,7 +6,6 @@ RSpec.describe User::TimeLogsController, type: :controller do
     session[:user_id] = user.id
   end
 
-
   describe "GET index" do
     it "assigns variables" do
       get :index

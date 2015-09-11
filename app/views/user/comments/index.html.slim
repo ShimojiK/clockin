@@ -7,9 +7,6 @@
 - else
   div= unupdatable_message(@time_log)
 
-= @time_log.user_updatable?
-= Time.zone.now
-
 = form_for @new_comment, url: { controller: "user/comments", action: :create } do |f|
   .comment-form
     = f.label :body, "コメント"
