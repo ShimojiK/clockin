@@ -12,6 +12,7 @@ RSpec.describe TimeLog, type: :model do
     subject { FactoryGirl.build :time_log, start_at: Time.now + 1.hour }
     it { is_expected.not_to be_valid }
   end
+
   describe "#shorten?" do
     let(:param) do
       time = Time.now - 9.hour - 10.minute # set locale and shorten
@@ -49,10 +50,6 @@ RSpec.describe TimeLog, type: :model do
       time_log = FactoryGirl.create :time_log_with_user, original_end_at: nil
       expect(time_log.user_updatable_status).to be :uncomplete
     end
-  end
-
-  describe "#unupdatable_message" do
-    pending "unupdatable_message"
   end
 
   describe "#update_with_create_user_comment" do

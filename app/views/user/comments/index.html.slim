@@ -4,9 +4,11 @@
     - year = Time.now.year
     = f.datetime_select :end_at, use_month_numbers: true, start_year: year.pred, end_year: year
     = f.submit "変更"
-/ 更新不可能の時は表示しない?
-/- else
-  div= @time_log.unupdatable_message
+- else
+  div= unupdatable_message(@time_log)
+
+= @time_log.user_updatable?
+= Time.zone.now
 
 = form_for @new_comment, url: { controller: "user/comments", action: :create } do |f|
   .comment-form

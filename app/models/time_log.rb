@@ -34,15 +34,8 @@ class TimeLog < ActiveRecord::Base
     user_updatable_status == :ok
   end
 
-  def unupdatable_message
-    case user_updatable_status
-    when :time_over then "変更ができるのは打刻後60分以内です"
-    when :non_target then "変更できるのは最新の打刻だけです"
-    when :uncomplete then "まだ終了していません"
-    end
-  end
-
   #fixme uncool
+  # should not hard-code notice, alert
   def update_with_create_user_comment(params, old_end)
     if update(params)
       if user_comments.create(body: "終了時刻を:#{old_end} から #{end_at}に変更しました")
