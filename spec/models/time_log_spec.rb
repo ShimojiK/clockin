@@ -56,7 +56,7 @@ RSpec.describe TimeLog, type: :model do
     it "return { alert: nil } on success" do
       time_log = FactoryGirl.create :time_log
       old_end = time_log.end_at
-      expect(time_log.update_with_create_user_comment({ end_at: (old_end - 1.minute) }, old_end)).to eq ({ alert: nil })
+      expect(time_log.update_with_create_user_comment({ end_at: (old_end - 1.minute) }, old_end)).to eq ({ notice: "更新に成功しました" })
     end
   end
 
@@ -65,7 +65,7 @@ RSpec.describe TimeLog, type: :model do
       admin = FactoryGirl.create :admin
       time_log = FactoryGirl.create :time_log
       old_end = time_log.end_at
-      expect(time_log.update_with_create_admin_comment({ end_at: (old_end - 1.minute) }, old_end, admin)).to eq ({ alert: nil })
+      expect(time_log.update_with_create_admin_comment({ end_at: (old_end - 1.minute) }, old_end, admin)).to eq ({ notice: "更新に成功しました" })
     end
   end
 end
