@@ -10,36 +10,24 @@ class TimeLog < ActiveRecord::Base
     errors.add(:base, "Must not inversion time") if end_at && start_at >= end_at
   end
 
-  def shorten?(param)
-    end_at > Time.zone.local(param["end_at(1i)"], param["end_at(2i)"], param["end_at(3i)"], param["end_at(4i)"], param["end_at(5i)"])
-  end
-
-  def user_updatable_status
-    if original_end_at
-      if last?
-        if within_time?
-          :ok
-        else
-          :time_over
-        end
-      else
-        :non_target
-      end
-    else
-      :uncomplete
+  def updatable_check(params = nil)
+    if params && lengthen?(params)
+      errors.add(:base, "延長はできません")
+    elsif original_end_at.!
+      errors.add(:base, "まだ終了していません")
+    elsif non_last?
+      errors.add(:base, "変更できるのは最新の打刻だけです")
+    elsif time_up?
+      errors.add(:base, "変更ができるのは打刻後60分以内です")
     end
   end
 
-  def user_updatable?
-    user_updatable_status == :ok
-  end
-
-  #fixme uncool
-  # should not hard-code notice, alert
-  def update_with_create_user_comment(params, old_end)
-     update_with_info(params) do
-       user_comments.create(body: "終了時刻を:#{old_end} から #{end_at}に変更しました")
-     end
+  def update_with_create_user_comment(params)
+    old_end = self.end_at
+    updatable_check(params)
+    if update(params)
+      user_comments.create(body: "終了時刻を:#{old_end} から #{end_at}に変更しました")
+    end
   end
 
   def update_with_create_admin_comment(params, old_end, admin)
@@ -49,12 +37,16 @@ class TimeLog < ActiveRecord::Base
   end
 
   private
-  def last?
-    self == self.user.time_logs.last
+  def lengthen?(param)
+    end_at < Time.zone.local(param["end_at(1i)"], param["end_at(2i)"], param["end_at(3i)"], param["end_at(4i)"], param["end_at(5i)"])
   end
 
-  def within_time?
-    Time.now < original_end_at + 1.hour
+  def non_last?
+    self != self.user.time_logs.last
+  end
+
+  def time_up?
+    Time.now > original_end_at + 1.hour
   end
 
   def update_with_info(params)
