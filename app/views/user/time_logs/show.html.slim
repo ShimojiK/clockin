@@ -1,7 +1,7 @@
 - if @time_log.errors.any?
   - @time_log.errors.full_messages.each do |message|
     div= message
-- else
+- if @time_log.user_updatable?
   div= "#{@time_log.start_at}～"
   = form_for @time_log do |f|
     - year = Time.now.year

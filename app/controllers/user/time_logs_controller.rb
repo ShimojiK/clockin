@@ -28,7 +28,7 @@ class User::TimeLogsController < User::Base
     if @time_log.errors.any?
       render 'show'
     else
-      redirect_to time_log_comments_path(params[:id]), info
+      redirect_to time_log_path(@time_log)
     end
   end
 

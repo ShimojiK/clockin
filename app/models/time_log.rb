@@ -10,6 +10,10 @@ class TimeLog < ActiveRecord::Base
     errors.add(:base, "Must not inversion time") if end_at && start_at >= end_at
   end
 
+  def user_updatable?
+    original_end_at && non_last?.! && time_up?.!
+  end
+
   def updatable_check(params = nil)
     if params && lengthen?(params)
       errors.add(:base, "延長はできません")
@@ -25,8 +29,10 @@ class TimeLog < ActiveRecord::Base
   def update_with_create_user_comment(params)
     old_end = self.end_at
     updatable_check(params)
-    if update(params)
-      user_comments.create(body: "終了時刻を:#{old_end} から #{end_at}に変更しました")
+    unless errors.any?
+      if update(params)
+        user_comments.create(body: "終了時刻を:#{old_end} から #{end_at}に変更しました")
+      end
     end
   end
 
