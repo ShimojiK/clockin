@@ -1,19 +1,20 @@
+- if @time_log.errors.any?
+  - @time_log.errors.full_messages.each do |message|
+    div= message
 - if @time_log.user_updatable?
   div= "#{@time_log.start_at}～"
   = form_for @time_log do |f|
     - year = Time.now.year
     = f.datetime_select :end_at, use_month_numbers: true, start_year: year.pred, end_year: year
     = f.submit "変更"
-- else
-  div= unupdatable_message(@time_log)
 
-= form_for @new_comment, url: { controller: "user/comments", action: :create } do |f|
+= form_for @time_log.user_comments.new, url: time_log_comments_path(@time_log) do |f|
   .comment-form
     = f.label :body, "コメント"
     = f.text_field :body, autocomplete: :off, class: "body"
     = f.submit "送信", class: "send"
 
-- @comments.reverse_each do |comment|
+- @time_log.comments.reverse_each do |comment|
   / todo instance_of?で色分け
   div
     = comment.body

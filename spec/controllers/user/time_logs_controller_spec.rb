@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe User::TimeLogsController, type: :controller do
   let(:user) { FactoryGirl.create :user }
+  let(:time_log) { FactoryGirl.create :time_log, user: user }
   before do
     session[:user_id] = user.id
   end
@@ -16,6 +17,18 @@ RSpec.describe User::TimeLogsController, type: :controller do
     it "renders time_logs index" do
       get :index
       expect(response).to render_template("index")
+    end
+  end
+
+  describe "GET show" do
+    it "assigns variables" do
+      get :show, id: time_log
+      expect(assigns(:time_log)).to eq time_log
+    end
+
+    it "renders time_logs show" do
+      get :show, id: time_log
+      expect(response).to render_template("show")
     end
   end
 
@@ -51,10 +64,10 @@ RSpec.describe User::TimeLogsController, type: :controller do
       }.to change{ time_log.end_at }.from(old_time).to(Time.zone.local(*param.values))
     end
 
-    it "redirects to time_log_comment_path" do
+    it "redirects to time_log_path" do
       time_log = FactoryGirl.create :time_log, user: user
       patch :update, id: time_log.id, time_log: param
-      expect(response).to redirect_to time_log_comments_path(time_log)
+      expect(response).to redirect_to time_log_path(time_log)
     end
   end
 end

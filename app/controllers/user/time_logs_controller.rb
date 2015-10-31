@@ -4,6 +4,11 @@ class User::TimeLogsController < User::Base
     @time_logs = current_user.time_logs
   end
 
+  def show
+    @time_log = current_user.time_logs.find(params[:id])
+    @time_log.updatable_check()
+  end
+
   def create
     time_log = current_user.time_logs.find_or_initialize_by(end_at: nil)
     time = Time.now
@@ -18,16 +23,12 @@ class User::TimeLogsController < User::Base
   end
 
   def update
-    time_log = current_user.time_logs.find(params[:id])
-    old_end = time_log.end_at
-    if time_log.shorten?(params[:time_log])
-      if time_log.user_updatable?
-        redirect_to time_log_comments_path(params[:id]), time_log.update_with_create_user_comment(time_log_params, old_end)
-      else
-        redirect_to time_log_comments_path(params[:id]), alert: time_log.unupdatable_message
-      end
+    @time_log = current_user.time_logs.find(params[:id])
+    @time_log.update_with_create_user_comment(time_log_params)
+    if @time_log.errors.any?
+      render 'show'
     else
-      redirect_to time_log_comments_path(params[:id]), alert: "延長はできません"
+      redirect_to time_log_path(@time_log)
     end
   end
 
