@@ -3,7 +3,7 @@ class CreateComments < ActiveRecord::Migration
     create_table :comments do |t|
       t.references :time_log, index: true, foreign_key: true
       t.text :body
-      t.references :ack_admin, index: true, foreign_key: true
+      t.integer :ack_admin_id, index: true, foreign_key: true
       t.integer :status
       t.references :admin, index: true, foreign_key: true
       t.string :type, index: true
