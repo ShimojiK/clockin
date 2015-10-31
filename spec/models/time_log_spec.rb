@@ -13,9 +13,9 @@ RSpec.describe TimeLog, type: :model do
     it { is_expected.not_to be_valid }
   end
 
-  describe "#shorten?" do
+  describe "#lengthen?" do
     let(:param) do
-      time = Time.now - 9.hour - 10.minute # set locale and shorten
+      time = Time.now - 9.hour + 10.minute # set locale and shorten
       { "end_at(1i)" => time.year,
         "end_at(2i)" => time.month,
         "end_at(3i)" => time.day,
@@ -24,39 +24,47 @@ RSpec.describe TimeLog, type: :model do
     end
     it "is true " do
       time_log = FactoryGirl.build :time_log
-      expect(time_log.shorten?(param)).to be_truthy
+      expect(time_log.send(:lengthen?, param)).to be true
     end
   end
 
-  describe "#user_updatable_status" do
-    it "is :ok" do
+  describe "#user_updatable?" do
+    it "is true" do
       time_log = FactoryGirl.create :time_log_with_user
-      expect(time_log.user_updatable_status).to be :ok
+      expect(time_log.user_updatable?).to be true
     end
 
-    it "is :time_over on passing 1 hour and over" do
+    it "is falsy on passing 1 hour and over" do
       time_log = FactoryGirl.create :time_log_with_user, original_end_at: Time.now - 2.hour
-      expect(time_log.user_updatable_status).to be :time_over
+      expect(time_log.user_updatable?).to be_falsy
     end
 
-    it "is :non_target on non last time_log" do
+    it "is falsy on non last time_log" do
       user = FactoryGirl.create :user
       time_logs = FactoryGirl.create_list :time_log, 3, user: user
-      expect(time_logs.last.user_updatable_status).to be :ok
-      expect(time_logs.first.user_updatable_status).to be :non_target
+      expect(time_logs.last.user_updatable?).to be true
+      expect(time_logs.first.user_updatable?).to be_falsy
     end
 
-    it "is :uncomplete on unfinished time_log" do
+    it "is falsy on unfinished time_log" do
       time_log = FactoryGirl.create :time_log_with_user, original_end_at: nil
-      expect(time_log.user_updatable_status).to be :uncomplete
+      expect(time_log.user_updatable?).to be_falsy
     end
   end
 
   describe "#update_with_create_user_comment" do
-    it "return { alert: nil } on success" do
-      time_log = FactoryGirl.create :time_log
-      old_end = time_log.end_at
-      expect(time_log.update_with_create_user_comment({ end_at: (old_end - 1.minute) }, old_end)).to eq ({ notice: "更新に成功しました" })
+    it "creates user comment on success" do
+      time_log = FactoryGirl.create :time_log_with_user
+      end_at = time_log.end_at
+      time = {
+        "end_at(1i)" => end_at.year.to_s,
+        "end_at(2i)" => end_at.month.to_s,
+        "end_at(3i)" => end_at.day.to_s,
+        "end_at(4i)" => end_at.hour.to_s,
+        "end_at(5i)" => (end_at.min - 1).to_s }
+      expect {
+        time_log.update_with_create_user_comment(time)
+      }.to change{ UserComment.count }.from(0).to(1)
     end
   end
 

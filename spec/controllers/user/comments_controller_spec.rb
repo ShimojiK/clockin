@@ -7,21 +7,6 @@ RSpec.describe User::CommentsController, type: :controller do
     session[:user_id] = user.id
   end
 
-  describe "GET index" do
-    it "assigns variables" do
-      comments = FactoryGirl.create_list :comment, 5, time_log: time_log
-      get :index, time_log_id: time_log.id
-      expect(assigns(:time_log)).to eq time_log
-      expect(assigns(:comments)).to eq comments
-      expect(assigns(:new_comment)).to be_a_new UserComment
-    end
-
-    it "renders comments index" do
-      get :index, time_log_id: time_log.id
-      expect(response).to render_template("index")
-    end
-  end
-
   describe "POST create" do
     it "creates new user comment" do
       expect {
@@ -32,7 +17,7 @@ RSpec.describe User::CommentsController, type: :controller do
 
     it "redirects to time_log_comments_path" do
       post :create, time_log_id: time_log.id, user_comment: { body: "test body" }
-      expect(response).to redirect_to time_log_comments_path(time_log)
+      expect(response).to redirect_to time_log_path(time_log)
     end
   end
 end

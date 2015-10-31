@@ -7,7 +7,7 @@ class TimeLog < ActiveRecord::Base
   validate :not_inversion
 
   def not_inversion
-    errors.add(:base, "Must not inversion time") if end_at && start_at >= end_at
+    errors.add(:base, "終了時刻が開始時刻より前です") if end_at && start_at >= end_at
   end
 
   def user_updatable?
