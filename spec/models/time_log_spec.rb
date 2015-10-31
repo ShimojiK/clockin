@@ -55,13 +55,13 @@ RSpec.describe TimeLog, type: :model do
   describe "#update_with_create_user_comment" do
     it "creates user comment on success" do
       time_log = FactoryGirl.create :time_log_with_user
-      end_at = time_log.end_at
+      end_at = time_log.end_at - 1.minute
       time = {
         "end_at(1i)" => end_at.year.to_s,
         "end_at(2i)" => end_at.month.to_s,
         "end_at(3i)" => end_at.day.to_s,
         "end_at(4i)" => end_at.hour.to_s,
-        "end_at(5i)" => (end_at.min - 1).to_s }
+        "end_at(5i)" => end_at.min.to_s }
       expect {
         time_log.update_with_create_user_comment(time)
       }.to change{ UserComment.count }.from(0).to(1)
@@ -72,8 +72,16 @@ RSpec.describe TimeLog, type: :model do
     it "return { alert: nil } on success" do
       admin = FactoryGirl.create :admin
       time_log = FactoryGirl.create :time_log
-      old_end = time_log.end_at
-      expect(time_log.update_with_create_admin_comment({ end_at: (old_end - 1.minute) }, old_end, admin)).to eq ({ notice: "更新に成功しました" })
+      end_at = time_log.end_at - 1.minute
+      time = {
+        "end_at(1i)" => end_at.year.to_s,
+        "end_at(2i)" => end_at.month.to_s,
+        "end_at(3i)" => end_at.day.to_s,
+        "end_at(4i)" => end_at.hour.to_s,
+        "end_at(5i)" => end_at.min.to_s }
+      expect {
+        time_log.update_with_create_admin_comment(time, admin)
+      }.to change{ AdminComment.count }.from(0).to(1)
     end
   end
 end
