@@ -5,7 +5,7 @@ table
   tr
     th start
     th end
-  - @time_logs.each do |time_log|
+  - @time_logs.reverse_each do |time_log|
     tr
       td= time_log.start_at
       - if time_log.end_at
