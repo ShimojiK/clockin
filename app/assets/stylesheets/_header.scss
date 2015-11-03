@@ -1,0 +1,24 @@
+nav.nav-bar {
+  $header-background: #444;
+  background-color: $header-background;
+  width: 100%;
+
+  a:link, a:visited, a:hover, a:active {
+    color: snow;
+  }
+
+  .nav-section {
+    display: flex;
+
+    a {
+      text-align: center;
+      width: 75px;
+      padding: 10px;
+      line-height: 40px;
+    }
+
+    :hover {
+      background-color: #222;
+    }
+  }
+}

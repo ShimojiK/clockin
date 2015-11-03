@@ -2,13 +2,19 @@
 @import "base/grid-settings";
 @import "neat";
 @import "base/base";
+@import "header";
 
 body {
+  margin: 0;
   font-family: $helvetica;
 }
 
 .wrapper {
   @include outer-container(1024px);
+}
+
+.content {
+  margin-top: 15px;
 }
 
 .user-form {
