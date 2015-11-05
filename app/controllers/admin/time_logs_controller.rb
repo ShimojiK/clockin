@@ -10,11 +10,10 @@ class Admin::TimeLogsController < Admin::Base
 
   def update
     @time_log = TimeLog.find(params[:id])
-    @time_log.update_with_create_admin_comment(time_log_params, current_admin)
-    if @time_log.errors.any?
-      render 'show'
-    else
+    if @time_log.update_with_create_admin_comment(time_log_params, current_admin)
       redirect_to admin_time_log_path(@time_log), { notice: "更新に成功しました" }
+    else
+      render 'show'
     end
   end
 
