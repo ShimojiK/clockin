@@ -7,13 +7,15 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   body
-    .header-menu
-      = link_to "top", time_logs_path
-      |  
-      = link_to "signout", signout_users_path, method: :delete
+    - if current_user
+      nav.nav-bar
+        section.nav-section
+          = link_to "top", time_logs_path
+          = link_to "signout", signout_users_path, method: :delete
     .wrapper
       .notice
         = notice
       .alert
         = alert
-      = yield
+      .content
+        = yield
