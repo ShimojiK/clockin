@@ -2,13 +2,25 @@ nav.nav-bar {
   $header-background: #444;
   background-color: $header-background;
   width: 100%;
+  overflow: auto;
 
   a:link, a:visited, a:hover, a:active {
     color: snow;
   }
 
+  .logo {
+    float: left;
+    text-align: center;
+    width: 100px;
+    padding: 10px;
+    line-height: 40px;
+    color: snow;
+    font-size: 130%;
+  }
+
   .nav-section {
     display: flex;
+    float: left;
 
     a {
       text-align: center;
@@ -20,5 +32,9 @@ nav.nav-bar {
     :hover {
       background-color: #222;
     }
+  }
+
+  .signout {
+    float: right;
   }
 }
