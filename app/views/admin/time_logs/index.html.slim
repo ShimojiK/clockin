@@ -5,10 +5,10 @@ table
   tr
     th start
     th end
-  - @time_logs.each do |time_log|
+  - @time_logs.reverse_each do |time_log|
     tr
       td= time_log.start_at
       - if time_log.end_at
-        td= link_to time_log.end_at, admin_time_log_comments_path(time_log)
+        td= link_to time_log.end_at, admin_time_log_path(time_log)
       - else
-        td= link_to "未終了", admin_time_log_comments_path(time_log)
+        td= link_to "未終了", admin_time_log_path(time_log)

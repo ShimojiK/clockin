@@ -20,6 +20,19 @@ RSpec.describe Admin::TimeLogsController, type: :controller do
     end
   end
 
+  describe "GET show" do
+    let(:time_log) { FactoryGirl.create :time_log, user: user }
+    it "assigns variables" do
+      get :show, id: time_log
+      expect(assigns(:time_log)).to eq time_log
+    end
+
+    it "renders time_log show" do
+      get :show, id: time_log
+      expect(response).to render_template("show")
+    end
+  end
+
   describe "PATCH update" do
     let(:start_param) do
       time = Time.now - 9.hour - 10.minute # set locale and change
@@ -50,7 +63,7 @@ RSpec.describe Admin::TimeLogsController, type: :controller do
     it "redirects to admin_user_time_logs_path" do
       time_log = FactoryGirl.create :time_log, user: user
       patch :update, id: time_log.id, time_log: start_param.merge(end_param)
-      expect(response).to redirect_to admin_time_log_comments_path(time_log)
+      expect(response).to redirect_to admin_time_log_path(time_log)
     end
   end
 end

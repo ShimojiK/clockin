@@ -1,4 +1,7 @@
-- if @time_log.user_updatable_status != :uncomplete
+- if @time_log.errors.any?
+  - @time_log.errors.full_messages.each do |message|
+    div= message
+- if @time_log.original_end_at
   div= form_for [:admin, @time_log] do |f|
     - year = Time.now.year
     = f.datetime_select :start_at, use_month_numbers: true, start_year: year.pred, end_year: year
@@ -8,13 +11,13 @@
 - else
   div 未完了です
 
-= form_for @new_comment, url: { controller: "admin/comments", action: :create } do |f|
+= form_for @time_log.admin_comments.new, url: admin_time_log_comments_path(@time_log) do |f|
   .comment-form
     = f.label :body, "コメント"
     = f.text_field :body, autocomplete: :off, class: "body"
     = f.submit "送信", class: "send"
 
-- @comments.reverse_each do |comment|
+- @time_log.comments.reverse_each do |comment|
   div
     = comment.body
     - if comment.instance_of? UserComment

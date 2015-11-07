@@ -36,8 +36,9 @@ class TimeLog < ActiveRecord::Base
     end
   end
 
-  def update_with_create_admin_comment(params, old_end, admin)
-    update_with_info(params) do
+  def update_with_create_admin_comment(params, admin)
+    old_end = self.end_at
+    if update(params)
       admin_comments.create(admin: admin, body: "#{admin.account}が終了時刻を:#{old_end} から #{end_at}に変更しました")
     end
   end
@@ -53,17 +54,5 @@ class TimeLog < ActiveRecord::Base
 
   def time_up?
     Time.now > original_end_at + 1.hour
-  end
-
-  def update_with_info(params)
-    if update(params)
-      if yield
-        { notice: "更新に成功しました" }
-      else
-        { notice: "コメントの投稿に失敗しました(時刻の変更には問題ありません)" }
-      end
-    else
-      { alert: "更新に失敗しました" }
-    end
   end
 end

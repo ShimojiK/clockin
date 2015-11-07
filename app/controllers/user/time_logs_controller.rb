@@ -15,20 +15,17 @@ class User::TimeLogsController < User::Base
     if time_log.start_at
       time_log.update(end_at: time, original_end_at: time)
     else
-      time_log.start_at = time
-      time_log.original_start_at = time
-      time_log.save
+      time_log.update(start_at: time, original_start_at: time)
     end
     redirect_to time_logs_path
   end
 
   def update
     @time_log = current_user.time_logs.find(params[:id])
-    @time_log.update_with_create_user_comment(time_log_params)
-    if @time_log.errors.any?
-      render 'show'
-    else
+    if @time_log.update_with_create_user_comment(time_log_params)
       redirect_to time_log_path(@time_log)
+    else
+      render 'show'
     end
   end
 
