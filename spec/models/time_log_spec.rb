@@ -15,7 +15,7 @@ RSpec.describe TimeLog, type: :model do
 
   describe "#lengthen?" do
     let(:param) do
-      time = Time.now - 9.hour + 10.minute # set locale and shorten
+      time = Time.now + 10.minute
       { "end_at(1i)" => time.year,
         "end_at(2i)" => time.month,
         "end_at(3i)" => time.day,

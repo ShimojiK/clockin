@@ -52,7 +52,7 @@ RSpec.describe Admin::TimeLogsController, type: :controller do
 
   describe "PATCH update" do
     let(:start_param) do
-      time = Time.now - 9.hour - 10.minute # set locale and change
+      time = Time.now - 10.minute
       { "start_at(1i)" => time.year,
         "start_at(2i)" => time.month,
         "start_at(3i)" => time.day,
@@ -60,7 +60,7 @@ RSpec.describe Admin::TimeLogsController, type: :controller do
         "start_at(5i)" => time.min }
     end
     let(:end_param) do
-      time = Time.now - 9.hour + 10.minute # set locale and change
+      time = Time.now + 10.minute
       { "end_at(1i)" => time.year,
         "end_at(2i)" => time.month,
         "end_at(3i)" => time.day,
