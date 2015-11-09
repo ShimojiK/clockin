@@ -10,8 +10,8 @@ Rails.application.routes.draw do
   namespace :admin do
     root "time_logs#index"
     resources :users, only: [:index, :new, :create, :edit, :update] do
-      resources :time_logs, only: [:index, :update], shallow: true do
-        resources :comments, only: [:index, :create, :update]
+      resources :time_logs, only: [:index, :show, :update], shallow: true do
+        resources :comments, only: [:create, :update]
       end
     end
   end

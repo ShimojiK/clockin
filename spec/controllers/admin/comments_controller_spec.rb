@@ -8,21 +8,6 @@ RSpec.describe Admin::CommentsController, type: :controller do
     session[:admin_id] = admin.id
   end
 
-  describe "GET index" do
-    it "assigns variables" do
-      comments = FactoryGirl.create_list :comment, 5, time_log: time_log
-      get :index, time_log_id: time_log.id
-      expect(assigns(:time_log)).to eq time_log
-      expect(assigns(:comments)).to eq comments
-      expect(assigns(:new_comment)).to be_a_new AdminComment
-    end
-
-    it "renders admin comments index" do
-      get :index, time_log_id: time_log.id
-      expect(response).to render_template("index")
-    end
-  end
-
   describe "POST create" do
     it "creates new admin comment" do
       expect {
