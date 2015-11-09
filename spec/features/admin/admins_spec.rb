@@ -13,7 +13,7 @@ feature 'Admin management' do
 
   scenario "log out" do
     visit admin_users_path
-    click_link 'signout'
+    click_link 'Sign out'
     expect(page).to have_content 'ログアウトしました'
   end
 
