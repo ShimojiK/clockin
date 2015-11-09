@@ -7,11 +7,14 @@ html
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = csrf_meta_tags
   body
-    - if current_admin
-      nav.nav-bar
-        section.nav-section
-          = link_to "users", admin_users_path
-          = link_to "signout", signout_admins_path, method: :delete
+    nav.nav-bar
+      section.logo
+        strong Clockin
+      - if current_admin
+       section.nav-section
+         = link_to "Users", admin_users_path
+       section.nav-section.signout
+         = link_to "Sign out", signout_admins_path, method: :delete
     .wrapper
       .notice
         = notice

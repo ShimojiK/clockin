@@ -31,7 +31,7 @@ feature "New user management" do
 
     # logout
     visit admin_users_path
-    click_link 'signout'
+    click_link 'Sign out'
 
     # login user
     user_login
