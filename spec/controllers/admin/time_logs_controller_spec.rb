@@ -12,8 +12,8 @@ RSpec.describe Admin::TimeLogsController, type: :controller do
       it "assigns variables" do
         get :index, user_id: user.id
         expect(assigns(:user)).to eq user
-        expect(assigns(:target_month)).to be nil
-        expect(assigns(:time_logs)).to be_a TimeLog::ActiveRecord_Associations_CollectionProxy
+        expect(assigns(:target_month)).to be_a Time
+        expect(assigns(:time_logs)).to be_a TimeLog::ActiveRecord_AssociationRelation
       end
 
       it "renders time_logs index" do
@@ -24,14 +24,15 @@ RSpec.describe Admin::TimeLogsController, type: :controller do
 
     context "with query" do
       it "assigns variables" do
-        get :index, user_id: user.id, query: { "date(1i)" => 2015, "date(2i)" => 1 }
+        MonthlyTimeLogs.create_monthly_time_logs(user, 2015, 10, 10, 12)
+        get :index, user_id: user.id, query: { "date(1i)" => 2015, "date(2i)" => 10 }
         expect(assigns(:user)).to eq user
-        expect(assigns(:target_month)).to eq Time.zone.local(2015, 1)
-        expect(assigns(:time_logs)).to be_a TimeLog::ActiveRecord_AssociationRelation
+        expect(assigns(:target_month)).to eq Time.zone.local(2015, 10)
+        expect(assigns(:time_logs).count).to be 3
       end
 
       it "renders time_logs index" do
-        get :index, user_id: user.id, query: { "date(1i)" => 2015, "date(2i)" => 1 }
+        get :index, user_id: user.id, query: { "date(1i)" => 2015, "date(2i)" => 10 }
         expect(response).to render_template :index
       end
     end
