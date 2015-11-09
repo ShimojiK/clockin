@@ -12,9 +12,9 @@ html
         strong Clockin
       - if current_user
         section.nav-section
-          = link_to "top", time_logs_path
+          = link_to "HOME", time_logs_path
         section.nav-section.signout
-          = link_to "signout", signout_users_path, method: :delete
+          = link_to "Sign out", signout_users_path, method: :delete
     .wrapper
       .notice
         = notice
