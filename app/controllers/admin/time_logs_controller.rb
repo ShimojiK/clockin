@@ -2,12 +2,7 @@ class Admin::TimeLogsController < Admin::Base
   def index
     @user = User.find(params[:user_id])
     @target_month = target_month
-    @time_logs =
-      if @target_month
-        @user.time_logs.where(original_start_at: @target_month.all_month)
-      else
-        @user.time_logs
-      end
+    @time_logs = @user.time_logs.where(original_start_at: @target_month.all_month)
   end
 
   def show
@@ -29,10 +24,10 @@ class Admin::TimeLogsController < Admin::Base
   end
 
   def target_month
-    params[:query].try do |q|
+    params[:query].try {|q|
       year = q["date(1i)"]
       month = q["date(2i)"]
       Time.zone.local(year, month) if year && month
-    end
+    } || Time.zone.now
   end
 end
