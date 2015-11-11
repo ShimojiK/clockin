@@ -4,6 +4,10 @@
   - else
     = submit_tag "Start", data: { disable_with: "送信中" }, class: "small-center"
 
+= form_tag time_logs_path, method: :get do
+  = date_select :query, :date, use_month_numbers: true, discard_day: true, start_year: @user.newest_year, end_year: @user.oldest_year, selected: @target_month
+  = submit_tag "検索"
+
 table
   tr
     th start
