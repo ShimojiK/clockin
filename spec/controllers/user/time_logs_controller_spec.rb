@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe User::TimeLogsController, type: :controller do
   let(:user) { FactoryGirl.create :user }
   let(:time_log) { FactoryGirl.create :time_log, user: user }
+
   before do
     session[:user_id] = user.id
   end
@@ -49,7 +50,6 @@ RSpec.describe User::TimeLogsController, type: :controller do
     let(:param) { params_from_time(Time.now - 10.minute, :end_at) }
 
     it "updates time_log" do
-      time_log = FactoryGirl.create :time_log, user: user
       old_time = time_log.end_at
       expect {
         patch :update, id: time_log.id, time_log: param
@@ -58,7 +58,6 @@ RSpec.describe User::TimeLogsController, type: :controller do
     end
 
     it "redirects to time_log_path" do
-      time_log = FactoryGirl.create :time_log, user: user
       patch :update, id: time_log.id, time_log: param
       expect(response).to redirect_to time_log_path(time_log)
     end

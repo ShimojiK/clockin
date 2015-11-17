@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe User::CommentsController, type: :controller do
   let(:user) { FactoryGirl.create :user }
   let(:time_log) { FactoryGirl.create :time_log, user: user }
+
   before do
     session[:user_id] = user.id
   end

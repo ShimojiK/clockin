@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe Admin::TimeLogsController, type: :controller do
   let(:admin) { FactoryGirl.create :admin }
   let(:user) { FactoryGirl.create :user }
+
   before do
     session[:admin_id] = admin.id
   end
@@ -30,7 +31,7 @@ RSpec.describe Admin::TimeLogsController, type: :controller do
 
     it "renders time_log show" do
       get :show, id: time_log
-      expect(response).to render_template("show")
+      expect(response).to render_template :show
     end
   end
 

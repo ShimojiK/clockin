@@ -2,13 +2,14 @@ require 'rails_helper'
 
 RSpec.describe Admin::UsersController, type: :controller do
   let(:admin) { FactoryGirl.create :admin }
+  let(:user) { FactoryGirl.create :user }
+
   before do
     session[:admin_id] = admin.id
   end
 
   describe "GET index" do
     it "assigns users" do
-      user = FactoryGirl.create :user
       get :index
       expect(assigns(:users)).to eq [user]
     end
@@ -48,13 +49,11 @@ RSpec.describe Admin::UsersController, type: :controller do
 
   describe "GET edit" do
     it "assigns user" do
-      user = FactoryGirl.create :user
       get :edit, id: user.id
       expect(assigns(:user)).to eq user
     end
 
     it "renders edit" do
-      user = FactoryGirl.create :user
       get :edit, id: user.id
       expect(response).to render_template :edit
     end
@@ -62,7 +61,6 @@ RSpec.describe Admin::UsersController, type: :controller do
 
   describe "PATCH update" do
     it "update user" do
-      user = FactoryGirl.create :user
       name = user.name
       expect {
         patch :update, id: user.id, user: { name: "ayase eli", desc: "harasyo", account: "eli" }
@@ -71,7 +69,6 @@ RSpec.describe Admin::UsersController, type: :controller do
     end
 
     it "redirects to admin_user_time_logs_path" do
-      user = FactoryGirl.create :user
       patch :update, id: user.id, user: { name: "ayase eli", desc: "harasyo", account: "eli" }
       expect(response).to redirect_to admin_user_time_logs_path(user)
     end

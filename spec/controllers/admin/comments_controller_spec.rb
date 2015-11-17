@@ -4,6 +4,7 @@ RSpec.describe Admin::CommentsController, type: :controller do
   let(:admin) { FactoryGirl.create :admin }
   let(:user) { FactoryGirl.create :user }
   let(:time_log) { FactoryGirl.create :time_log, user: user }
+
   before do
     session[:admin_id] = admin.id
   end
