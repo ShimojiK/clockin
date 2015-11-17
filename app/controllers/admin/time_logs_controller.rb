@@ -2,7 +2,7 @@ class Admin::TimeLogsController < Admin::Base
   def index
     @user = User.find(params[:user_id])
     @target_month = target_month
-    @time_logs = @user.time_logs.where(original_start_at: @target_month.all_month)
+    @time_logs = @user.time_logs.where(start_at: @target_month.all_month)
   end
 
   def show

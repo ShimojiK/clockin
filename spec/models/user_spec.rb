@@ -10,7 +10,7 @@ RSpec.describe User, type: :model do
   end
 
   let(:user) { FactoryGirl.create :user }
-  let!(:old_time_log) { FactoryGirl.create :time_log, user: user, original_start_at: Time.utc(2013) }
+  let!(:old_time_log) { FactoryGirl.create :time_log, user: user, start_at: Time.utc(2013) }
   let!(:new_time_log) { FactoryGirl.create :time_log, user: user }
   describe "#newest_year" do
     subject { user.newest_year }

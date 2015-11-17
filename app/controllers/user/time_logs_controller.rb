@@ -3,7 +3,7 @@ class User::TimeLogsController < User::Base
     @user = current_user
     @condition = @user.time_logs.exists?(end_at: nil)
     @target_month = target_month
-    @time_logs = @user.time_logs.where(original_start_at: @target_month.all_month)
+    @time_logs = @user.time_logs.where(start_at: @target_month.all_month)
   end
 
   def show
