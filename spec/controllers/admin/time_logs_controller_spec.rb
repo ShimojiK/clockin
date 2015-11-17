@@ -22,6 +22,7 @@ RSpec.describe Admin::TimeLogsController, type: :controller do
 
   describe "GET show" do
     let(:time_log) { FactoryGirl.create :time_log, user: user }
+
     it "assigns variables" do
       get :show, id: time_log
       expect(assigns(:time_log)).to eq time_log
@@ -34,22 +35,8 @@ RSpec.describe Admin::TimeLogsController, type: :controller do
   end
 
   describe "PATCH update" do
-    let(:start_param) do
-      time = Time.now - 10.minute
-      { "start_at(1i)" => time.year,
-        "start_at(2i)" => time.month,
-        "start_at(3i)" => time.day,
-        "start_at(4i)" => time.hour,
-        "start_at(5i)" => time.min }
-    end
-    let(:end_param) do
-      time = Time.now + 10.minute
-      { "end_at(1i)" => time.year,
-        "end_at(2i)" => time.month,
-        "end_at(3i)" => time.day,
-        "end_at(4i)" => time.hour,
-        "end_at(5i)" => time.min }
-    end
+    let(:start_param) { params_from_time(Time.now - 10.minute, :start_at) }
+    let(:end_param) { params_from_time(Time.now + 10.minute, :end_at) }
 
     it "update time_log" do
       time_log = FactoryGirl.create :time_log, user: user

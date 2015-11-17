@@ -14,14 +14,8 @@ RSpec.describe TimeLog, type: :model do
   end
 
   describe "#lengthen?" do
-    let(:param) do
-      time = Time.now + 10.minute
-      { "end_at(1i)" => time.year,
-        "end_at(2i)" => time.month,
-        "end_at(3i)" => time.day,
-        "end_at(4i)" => time.hour,
-        "end_at(5i)" => time.min }
-    end
+    let(:param) { params_from_time(Time.now + 10.minute, :end_at) }
+
     it "is true " do
       time_log = FactoryGirl.build :time_log
       expect(time_log.send(:lengthen?, param)).to be true
@@ -56,12 +50,7 @@ RSpec.describe TimeLog, type: :model do
     it "creates user comment on success" do
       time_log = FactoryGirl.create :time_log_with_user
       end_at = time_log.end_at - 1.minute
-      time = {
-        "end_at(1i)" => end_at.year.to_s,
-        "end_at(2i)" => end_at.month.to_s,
-        "end_at(3i)" => end_at.day.to_s,
-        "end_at(4i)" => end_at.hour.to_s,
-        "end_at(5i)" => end_at.min.to_s }
+      time = params_from_time(time_log.end_at - 1.minute, :end_at)
       expect {
         time_log.update_with_create_user_comment(time)
       }.to change{ UserComment.count }.from(0).to(1)
@@ -73,12 +62,7 @@ RSpec.describe TimeLog, type: :model do
       admin = FactoryGirl.create :admin
       time_log = FactoryGirl.create :time_log
       end_at = time_log.end_at - 1.minute
-      time = {
-        "end_at(1i)" => end_at.year.to_s,
-        "end_at(2i)" => end_at.month.to_s,
-        "end_at(3i)" => end_at.day.to_s,
-        "end_at(4i)" => end_at.hour.to_s,
-        "end_at(5i)" => end_at.min.to_s }
+      time = params_from_time(time_log.end_at - 1.minute, :end_at)
       expect {
         time_log.update_with_create_admin_comment(time, admin)
       }.to change{ AdminComment.count }.from(0).to(1)
