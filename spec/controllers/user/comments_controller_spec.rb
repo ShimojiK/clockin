@@ -9,16 +9,16 @@ RSpec.describe User::CommentsController, type: :controller do
   end
 
   describe "POST create" do
+    subject { post :create, time_log_id: time_log.id, user_comment: { body: "test body" } }
+
     it "creates new user comment" do
-      expect {
-        post :create, time_log_id: time_log.id, user_comment: { body: "test body" }
-      }.to change{ time_log.comments.count }.from(0).to(1)
-      expect(time_log.comments.first.body).to eq "test body"
+      leads.to change{ time_log.comments.count }.from(0).to(1)
     end
 
-    it "redirects to time_log_comments_path" do
-      post :create, time_log_id: time_log.id, user_comment: { body: "test body" }
-      expect(response).to redirect_to time_log_path(time_log)
+    it "create body" do
+      leads{ time_log.comments.first.body }.to eq "test body"
     end
+
+    it { leads{ response }.to redirect_to time_log_path(time_log) }
   end
 end
