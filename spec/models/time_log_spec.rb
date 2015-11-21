@@ -90,7 +90,7 @@ RSpec.describe TimeLog, type: :model do
     let(:time) { params_from_time(time_log.end_at - 1.minute, :end_at) }
     subject { time_log.update_with_create_user_comment(time) }
 
-    it { lead_to change{ UserComment.count }.from(0).to(1) }
+    it { leads.to change{ UserComment.count }.from(0).to(1) }
   end
 
   describe "#update_with_create_admin_comment" do
@@ -99,6 +99,6 @@ RSpec.describe TimeLog, type: :model do
     let(:time) { params_from_time(time_log.end_at - 1.minute, :end_at) }
     subject { time_log.update_with_create_admin_comment(time, admin) }
 
-    it { lead_to change{ AdminComment.count }.from(0).to(1) }
+    it { leads.to change{ AdminComment.count }.from(0).to(1) }
   end
 end
