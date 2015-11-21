@@ -9,57 +9,48 @@ RSpec.describe User::TimeLogsController, type: :controller do
   end
 
   describe "GET index" do
+    before { get :index }
+
     it "assigns variables" do
-      get :index
       expect(assigns(:condition)).to be_falsey
       expect(assigns(:time_logs).class).to eq TimeLog::ActiveRecord_Associations_CollectionProxy
     end
 
-    it "renders time_logs index" do
-      get :index
-      expect(response).to render_template("index")
-    end
+    it { expect(response).to render_template("index") }
   end
 
   describe "GET show" do
+    before { get :show, id: time_log }
+
     it "assigns variables" do
-      get :show, id: time_log
       expect(assigns(:time_log)).to eq time_log
     end
 
-    it "renders time_logs show" do
-      get :show, id: time_log
-      expect(response).to render_template("show")
-    end
+    it { expect(response).to render_template("show") }
   end
 
   describe "POST create" do
+    subject { post :create, time_log: { end_at: Time.now } }
+
     it "creates time_log" do
-      expect {
-        post :create, time_log: { end_at: Time.now }
-      }.to change{ TimeLog.count }.from(0).to(1)
+      leads.to change{ TimeLog.count }.from(0).to(1)
     end
 
-    it "redirects to time_logs_path" do
-      post :create, time_log: { end_at: Time.now }
-      expect(response).to redirect_to time_logs_path
-    end
+    it { leads{ response }.to redirect_to time_logs_path }
   end
 
   describe "PATCH update" do
     let(:param) { params_from_time(Time.now - 10.minute, :end_at) }
+    let(:old_time) { time_log.end_at }
+    subject do
+      patch :update, id: time_log.id, time_log: param
+      time_log.reload
+    end
 
     it "updates time_log" do
-      old_time = time_log.end_at
-      expect {
-        patch :update, id: time_log.id, time_log: param
-        time_log.reload
-      }.to change{ time_log.end_at }.from(old_time).to(Time.zone.local(*param.values))
+      leads.to change{ time_log.end_at }.from(old_time).to(Time.zone.local(*param.values))
     end
 
-    it "redirects to time_log_path" do
-      patch :update, id: time_log.id, time_log: param
-      expect(response).to redirect_to time_log_path(time_log)
-    end
+    it { leads{ response }.to redirect_to time_log_path(time_log) }
   end
 end
