@@ -25,12 +25,4 @@ RSpec.describe User, type: :model do
       expect(subject).to be 2013
     end
   end
-
-  describe "#newest_and_oldest_year" do
-    it "returns both newest and oldest year" do
-      hash = user.newest_and_oldest_year
-      expect(hash[:max]).to be 2015
-      expect(hash[:min]).to be 2013
-    end
-  end
 end
