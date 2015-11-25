@@ -46,10 +46,18 @@ RSpec.describe Admin::TimeLogsController, type: :controller do
       time_log.reload
     end
 
-    it "update time_log" do
-      leads.to change{ time_log.end_at }.from(old_time).to(Time.zone.local(*end_param.values))
+    context "when success" do
+      it "update time_log" do
+        leads.to change{ time_log.end_at }.from(old_time).to(Time.zone.local(*end_param.values))
+      end
+
+      it { leads.to change{ AdminComment.count }.from(0).to(1) }
+
+      it { leads{ response }.to redirect_to admin_time_log_path(time_log) }
     end
 
-    it { leads{ response }.to redirect_to admin_time_log_path(time_log) }
+    context "when failure" do
+      it "doesn't update time_log"
+    end
   end
 end

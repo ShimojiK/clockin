@@ -32,11 +32,33 @@ RSpec.describe User::TimeLogsController, type: :controller do
   describe "POST create" do
     subject { post :create, time_log: { end_at: Time.now } }
 
-    it "creates time_log" do
-      leads.to change{ TimeLog.count }.from(0).to(1)
+    context "when start" do
+      it { leads.to change{ TimeLog.count }.from(0).to(1) }
+
+      it "updates start_at" do
+        leads{ TimeLog.first.start_at }.to be_a Time
+      end
+
+      it "doesn't update end_at" do
+        leads{ TimeLog.first.end_at }.to be_nil
+      end
+
+      it { leads{ response }.to redirect_to time_logs_path }
     end
 
-    it { leads{ response }.to redirect_to time_logs_path }
+    context "when end" do
+      before { post :create, time_log: { end_at: Time.now } }
+
+      it { leads.to_not change{ TimeLog.count } }
+
+      it "remains start_at" do
+        leads{ TimeLog.first.start_at.to_s }.to eq Time.now.to_s
+      end
+
+      it "updates end_at" do
+        leads{ TimeLog.first.end_at.to_s }.to eq Time.now.to_s
+      end
+    end
   end
 
   describe "PATCH update" do
@@ -47,10 +69,20 @@ RSpec.describe User::TimeLogsController, type: :controller do
       time_log.reload
     end
 
-    it "updates time_log" do
-      leads.to change{ time_log.end_at }.from(old_time).to(Time.zone.local(*param.values))
+    context "when success" do
+      it "updates time_log" do
+        leads.to change{ time_log.end_at }.from(old_time).to(Time.zone.local(*param.values))
+      end
+
+      it "create user comment" do
+        leads.to change{ UserComment.count }.from(0).to(1)
+      end
+
+      it { leads{ response }.to redirect_to time_log_path(time_log) }
     end
 
-    it { leads{ response }.to redirect_to time_log_path(time_log) }
+    context "when failuer" do
+      it "doesn't update time_log"
+    end
   end
 end
