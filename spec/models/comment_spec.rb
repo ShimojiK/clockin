@@ -11,14 +11,22 @@ RSpec.describe Comment, type: :model do
   end
 
   describe "#state" do
-    it "return 未承認 when status 0" do
-      comment = FactoryGirl.build :comment, status: 0
-      expect(comment.status).to be 0
+    let(:comment) { FactoryGirl.build :comment }
+    subject { comment.state }
+
+    context "when status 0" do
+      before { comment.status = 0 }
+      it { is_expected.to eq "未承認" }
     end
 
-    it "return 承認 when status 1" do
-      comment = FactoryGirl.build :comment, status: 1
-      expect(comment.status).to be 1
+    context "when status 1" do
+      before { comment.status = 1 }
+      it { is_expected.to eq "承認" }
+    end
+
+    context "when unknown status" do
+      before { comment.status = 25 }
+      it { is_expected.to eq "error" }
     end
   end
 end

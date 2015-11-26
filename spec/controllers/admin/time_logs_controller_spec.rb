@@ -3,23 +3,24 @@ require 'rails_helper'
 RSpec.describe Admin::TimeLogsController, type: :controller do
   let(:admin) { FactoryGirl.create :admin }
   let(:user) { FactoryGirl.create :user }
+
   before do
     session[:admin_id] = admin.id
   end
 
   describe "GET index" do
     context "without query" do
-      it "assigns variables" do
+      before do
         get :index, user_id: user.id
+      end
+
+      it "assigns variables" do
         expect(assigns(:user)).to eq user
         expect(assigns(:target_month)).to be_a Time
         expect(assigns(:time_logs)).to be_a TimeLog::ActiveRecord_AssociationRelation
       end
 
-      it "renders time_logs index" do
-        get :index, user_id: user.id
-        expect(response).to render_template :index
-      end
+      it { expect(response).to render_template :index }
     end
 
     context "with query" do
@@ -40,48 +41,41 @@ RSpec.describe Admin::TimeLogsController, type: :controller do
 
   describe "GET show" do
     let(:time_log) { FactoryGirl.create :time_log, user: user }
-    it "assigns variables" do
+
+    before do
       get :show, id: time_log
+    end
+
+    it "assigns variables" do
       expect(assigns(:time_log)).to eq time_log
     end
 
-    it "renders time_log show" do
-      get :show, id: time_log
-      expect(response).to render_template("show")
-    end
+    it { expect(response).to render_template :show }
   end
 
   describe "PATCH update" do
-    let(:start_param) do
-      time = Time.now - 10.minute
-      { "start_at(1i)" => time.year,
-        "start_at(2i)" => time.month,
-        "start_at(3i)" => time.day,
-        "start_at(4i)" => time.hour,
-        "start_at(5i)" => time.min }
-    end
-    let(:end_param) do
-      time = Time.now + 10.minute
-      { "end_at(1i)" => time.year,
-        "end_at(2i)" => time.month,
-        "end_at(3i)" => time.day,
-        "end_at(4i)" => time.hour,
-        "end_at(5i)" => time.min }
-    end
+    let(:start_param) { params_from_time(Time.now - 10.minute, :start_at) }
+    let(:end_param) { params_from_time(Time.now + 10.minute, :end_at) }
+    let(:time_log) { FactoryGirl.create :time_log, user: user }
+    let(:old_time) { old_time = time_log.end_at }
 
-    it "update time_log" do
-      time_log = FactoryGirl.create :time_log, user: user
-      old_time = time_log.end_at
-      expect {
-        patch :update, id: time_log.id, time_log: start_param.merge(end_param)
-        time_log.reload
-      }.to change{ time_log.end_at }.from(old_time).to(Time.zone.local(*end_param.values))
-    end
-
-    it "redirects to admin_user_time_logs_path" do
-      time_log = FactoryGirl.create :time_log, user: user
+    subject do
       patch :update, id: time_log.id, time_log: start_param.merge(end_param)
-      expect(response).to redirect_to admin_time_log_path(time_log)
+      time_log.reload
+    end
+
+    context "when success" do
+      it "update time_log" do
+        leads.to change{ time_log.end_at }.from(old_time).to(Time.zone.local(*end_param.values))
+      end
+
+      it { leads.to change{ AdminComment.count }.from(0).to(1) }
+
+      it { leads{ response }.to redirect_to admin_time_log_path(time_log) }
+    end
+
+    context "when failure" do
+      it "doesn't update time_log"
     end
   end
 end

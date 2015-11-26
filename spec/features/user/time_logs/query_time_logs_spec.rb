@@ -2,7 +2,7 @@ require 'rails_helper'
 
 feature "time_logs query" do
   let(:user) { FactoryGirl.create :user }
-  let(:time_regex) { /\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/ }
+  let(:time_regex) { /\d{4}-\d{2}-\d{2} \d{2}:\d{2}/ }
 
   before do
     user_login

@@ -4,7 +4,7 @@
 - if @time_log.user_updatable?
   div= "#{@time_log.start_at}～"
   = form_for @time_log do |f|
-    - year = Time.now.year
+    - year = Time.zone.now.year
     = f.datetime_select :end_at, use_month_numbers: true, start_year: year.pred, end_year: year
     = f.submit "変更"
 

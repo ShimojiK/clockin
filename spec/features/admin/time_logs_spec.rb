@@ -3,7 +3,7 @@ require 'rails_helper'
 feature 'Admin time_log management' do
   let(:admin) { FactoryGirl.create :admin }
   let(:user) { FactoryGirl.create :user }
-  let(:time_regex) { /\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/ }
+  let(:time_regex) { /\d{4}-\d{2}-\d{2} \d{2}:\d{2}/ }
 
   background do
     admin_login

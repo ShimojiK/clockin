@@ -3,24 +3,23 @@ require 'rails_helper'
 RSpec.describe User::TimeLogsController, type: :controller do
   let(:user) { FactoryGirl.create :user }
   let(:time_log) { FactoryGirl.create :time_log, user: user }
+
   before do
     session[:user_id] = user.id
   end
 
   describe "GET index" do
     context "without query" do
+      before { get :index }
+
       it "assigns variables" do
-        get :index
         expect(assigns(:user)).to eq user
         expect(assigns(:condition)).to be_falsey
         expect(assigns(:target_month)).to be_a Time
         expect(assigns(:time_logs)).to be_a TimeLog::ActiveRecord_AssociationRelation
       end
 
-      it "renders time_logs index" do
-        get :index
-        expect(response).to render_template("index")
-      end
+      it { expect(response).to render_template("index") }
     end
 
     context "with query" do
@@ -40,53 +39,69 @@ RSpec.describe User::TimeLogsController, type: :controller do
   end
 
   describe "GET show" do
+    before { get :show, id: time_log }
+
     it "assigns variables" do
-      get :show, id: time_log
       expect(assigns(:time_log)).to eq time_log
     end
 
-    it "renders time_logs show" do
-      get :show, id: time_log
-      expect(response).to render_template("show")
-    end
+    it { expect(response).to render_template("show") }
   end
 
   describe "POST create" do
-    it "creates time_log" do
-      expect {
-        post :create, time_log: { end_at: Time.now }
-      }.to change{ TimeLog.count }.from(0).to(1)
+    subject { post :create, time_log: { end_at: Time.zone.now } }
+
+    context "when start" do
+      it { leads.to change{ TimeLog.count }.from(0).to(1) }
+
+      it "updates start_at" do
+        leads{ TimeLog.first.start_at }.to be_a Time
+      end
+
+      it "doesn't update end_at" do
+        leads{ TimeLog.first.end_at }.to be_nil
+      end
+
+      it { leads{ response }.to redirect_to time_logs_path }
     end
 
-    it "redirects to time_logs_path" do
-      post :create, time_log: { end_at: Time.now }
-      expect(response).to redirect_to time_logs_path
+    context "when end" do
+      before { post :create, time_log: { end_at: Time.zone.now } }
+
+      it { leads.to_not change{ TimeLog.count } }
+
+      it "remains start_at" do
+        leads{ TimeLog.first.start_at.to_s }.to eq Time.zone.now.to_s
+      end
+
+      it "updates end_at" do
+        leads{ TimeLog.first.end_at.to_s }.to eq Time.zone.now.to_s
+      end
     end
   end
 
   describe "PATCH update" do
-    let(:param) do
-      time = Time.now - 10.minute
-      { "end_at(1i)" => time.year,
-        "end_at(2i)" => time.month,
-        "end_at(3i)" => time.day,
-        "end_at(4i)" => time.hour,
-        "end_at(5i)" => time.min }
-    end
-
-    it "updates time_log" do
-      time_log = FactoryGirl.create :time_log, user: user
-      old_time = time_log.end_at
-      expect {
-        patch :update, id: time_log.id, time_log: param
-        time_log.reload
-      }.to change{ time_log.end_at }.from(old_time).to(Time.zone.local(*param.values))
-    end
-
-    it "redirects to time_log_path" do
-      time_log = FactoryGirl.create :time_log, user: user
+    let(:param) { params_from_time(Time.zone.now - 10.minute, :end_at) }
+    let(:old_time) { time_log.end_at }
+    subject do
       patch :update, id: time_log.id, time_log: param
-      expect(response).to redirect_to time_log_path(time_log)
+      time_log.reload
+    end
+
+    context "when success" do
+      it "updates time_log" do
+        leads.to change{ time_log.end_at }.from(old_time).to(Time.zone.local(*param.values))
+      end
+
+      it "create user comment" do
+        leads.to change{ UserComment.count }.from(0).to(1)
+      end
+
+      it { leads{ response }.to redirect_to time_log_path(time_log) }
+    end
+
+    context "when failuer" do
+      it "doesn't update time_log"
     end
   end
 end

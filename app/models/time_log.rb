@@ -53,6 +53,6 @@ class TimeLog < ActiveRecord::Base
   end
 
   def time_up?
-    Time.now > original_end_at + 1.hour
+    Time.zone.now > original_end_at + 1.hour
   end
 end
