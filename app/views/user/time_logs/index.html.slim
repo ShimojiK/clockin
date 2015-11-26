@@ -10,8 +10,8 @@ table
     th end
   - @time_logs.reverse_each do |time_log|
     tr
-      td= time_log.start_at
+      td= time_log.start_at.to_s
       - if time_log.end_at
-        td= link_to time_log.end_at, time_log
+        td= link_to time_log.end_at.to_s, time_log
       - else
         td= link_to "未終了", time_log
