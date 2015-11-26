@@ -30,7 +30,7 @@ RSpec.describe User::TimeLogsController, type: :controller do
   end
 
   describe "POST create" do
-    subject { post :create, time_log: { end_at: Time.now } }
+    subject { post :create, time_log: { end_at: Time.zone.now } }
 
     context "when start" do
       it { leads.to change{ TimeLog.count }.from(0).to(1) }
@@ -47,22 +47,22 @@ RSpec.describe User::TimeLogsController, type: :controller do
     end
 
     context "when end" do
-      before { post :create, time_log: { end_at: Time.now } }
+      before { post :create, time_log: { end_at: Time.zone.now } }
 
       it { leads.to_not change{ TimeLog.count } }
 
       it "remains start_at" do
-        leads{ TimeLog.first.start_at.to_s }.to eq Time.now.to_s
+        leads{ TimeLog.first.start_at.to_s }.to eq Time.zone.now.to_s
       end
 
       it "updates end_at" do
-        leads{ TimeLog.first.end_at.to_s }.to eq Time.now.to_s
+        leads{ TimeLog.first.end_at.to_s }.to eq Time.zone.now.to_s
       end
     end
   end
 
   describe "PATCH update" do
-    let(:param) { params_from_time(Time.now - 10.minute, :end_at) }
+    let(:param) { params_from_time(Time.zone.now - 10.minute, :end_at) }
     let(:old_time) { time_log.end_at }
     subject do
       patch :update, id: time_log.id, time_log: param

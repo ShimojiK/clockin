@@ -27,7 +27,7 @@ RSpec.describe TimeLog, type: :model do
     context "when invalid" do
       context "lengthen" do
         before do
-          time_log.updatable_check(params_from_time(Time.now + 1.hour, :end_at))
+          time_log.updatable_check(params_from_time(Time.zone.now + 1.hour, :end_at))
         end
         it { is_expected.not_to be_zero }
       end
