@@ -35,4 +35,5 @@ body {
 .small-center {
   @include span-columns(2);
   @include shift(5);
+  float: none;
 }

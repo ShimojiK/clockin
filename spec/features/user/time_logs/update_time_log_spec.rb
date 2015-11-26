@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-feature 'TimeLog management' do
+feature 'time_logs' do
   let(:time) { Time.zone.local 2015, 8, 20, 12, 30 }
   let(:start_time) { time - 1.hour }
   let(:end_time) { time }
@@ -15,22 +15,6 @@ feature 'TimeLog management' do
 
   after do
     Timecop.return
-  end
-
-  scenario "clock in" do
-    visit time_logs_path
-    expect {
-      click_button 'Start'
-    }.to change{ user.time_logs.count }.from(0).to(1)
-    expect(user.time_logs.first.start_at).not_to be_nil
-    expect(user.time_logs.first.end_at).to be_nil
-  end
-
-  scenario "clock out" do
-    visit time_logs_path
-    click_button 'Start'
-    click_button 'Stop'
-    expect(user.time_logs.first.end_at).not_to be_nil
   end
 
   # to_sしないと同じ時間でも比較できない
