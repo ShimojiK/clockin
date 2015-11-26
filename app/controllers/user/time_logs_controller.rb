@@ -11,7 +11,7 @@ class User::TimeLogsController < User::Base
 
   def create
     time_log = current_user.time_logs.find_or_initialize_by(end_at: nil)
-    time = Time.now
+    time = Time.zone.now
     if time_log.start_at
       time_log.update(end_at: time, original_end_at: time)
     else

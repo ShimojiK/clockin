@@ -3,7 +3,7 @@
     div= message
 - if @time_log.original_end_at
   div= form_for [:admin, @time_log] do |f|
-    - year = Time.now.year
+    - year = Time.zone.now.year
     = f.datetime_select :start_at, use_month_numbers: true, start_year: year.pred, end_year: year
     | ~ 
     = f.datetime_select :end_at, use_month_numbers: true, start_year: year.pred, end_year: year
