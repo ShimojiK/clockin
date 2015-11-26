@@ -10,19 +10,36 @@ RSpec.describe User, type: :model do
   end
 
   let(:user) { FactoryGirl.create :user }
-  let!(:old_time_log) { FactoryGirl.create :time_log, user: user, start_at: Time.utc(2013) }
-  let!(:new_time_log) { FactoryGirl.create :time_log, user: user }
-  describe "#newest_year" do
-    subject { user.newest_year }
-    it "is newest year" do
-      expect(subject).to be 2015
+
+  describe "years" do
+    let!(:old_time_log) { FactoryGirl.create :time_log, user: user, start_at: Time.utc(2013) }
+    let!(:new_time_log) { FactoryGirl.create :time_log, user: user }
+
+    describe "#newest_year" do
+      subject { user.newest_year }
+      it "is newest year" do
+        expect(subject).to be 2015
+      end
+    end
+
+    describe "#oldest_year" do
+      subject { user.oldest_year }
+      it "is oldest year" do
+        expect(subject).to be 2013
+      end
     end
   end
 
-  describe "#oldest_year" do
-    subject { user.oldest_year }
-    it "is oldest year" do
-      expect(subject).to be 2013
+  describe "#monthly_work_seconds" do
+    let(:date) { Time.zone.now }
+    subject { user.monthly_work_seconds(date) }
+
+    before do
+      MonthlyTimeLogs.create_monthly_time_logs(user, date.year, date.month)
+    end
+
+    it "returns sum of monthly seconds" do
+      is_expected.to eq 10800
     end
   end
 end
