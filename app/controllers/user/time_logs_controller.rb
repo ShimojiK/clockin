@@ -1,7 +1,9 @@
 class User::TimeLogsController < User::Base
   def index
-    @condition = current_user.time_logs.exists?(end_at: nil)
-    @time_logs = current_user.time_logs
+    @user = current_user
+    @condition = @user.time_logs.exists?(end_at: nil)
+    @target_month = target_month
+    @time_logs = @user.time_logs.where(start_at: @target_month.all_month)
   end
 
   def show
@@ -32,5 +34,13 @@ class User::TimeLogsController < User::Base
   private
   def time_log_params
     params.require(:time_log).permit(:end_at)
+  end
+
+  def target_month
+    params[:query].try {|q|
+      year = q["date(1i)"]
+      month = q["date(2i)"]
+      Time.zone.local(year, month) if year && month
+    } || Time.zone.now
   end
 end

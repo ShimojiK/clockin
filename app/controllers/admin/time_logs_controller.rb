@@ -1,7 +1,8 @@
 class Admin::TimeLogsController < Admin::Base
   def index
     @user = User.find(params[:user_id])
-    @time_logs = @user.time_logs
+    @target_month = target_month
+    @time_logs = @user.time_logs.where(start_at: @target_month.all_month)
   end
 
   def show
@@ -20,5 +21,13 @@ class Admin::TimeLogsController < Admin::Base
   private
   def time_log_params
     params.require(:time_log).permit(:start_at, :end_at)
+  end
+
+  def target_month
+    params[:query].try {|q|
+      year = q["date(1i)"]
+      month = q["date(2i)"]
+      Time.zone.local(year, month) if year && month
+    } || Time.zone.now
   end
 end
