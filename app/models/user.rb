@@ -15,7 +15,8 @@ class User < ActiveRecord::Base
 
   def monthly_work_seconds(target_month)
     time_logs.where(start_at: target_month.all_month).inject(0) {|acc, time_log|
-      acc + (time_log.end_at - time_log.start_at)
+      time_log_end_at = time_log.end_at ? time_log.end_at : Time.zone.now
+      acc + (time_log_end_at - time_log.start_at)
     }.floor
   end
 end
