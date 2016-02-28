@@ -16,8 +16,10 @@ class User::TimeLogsController < User::Base
     time = Time.zone.now
     if time_log.start_at
       time_log.update(end_at: time, original_end_at: time)
+      SlackBot.notify(body: "#{current_user.name}(#{current_user.account}): Start")
     else
       time_log.update(start_at: time, original_start_at: time)
+      SlackBot.notify(body: "#{current_user.name}(#{current_user.account}): Stop...#{(time_log.end_at-time_log.start_at)/60.0}分")
     end
     redirect_to time_logs_path
   end
